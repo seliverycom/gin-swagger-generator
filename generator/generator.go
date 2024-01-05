@@ -99,6 +99,12 @@ func (s *Service) generateServer(collection *collector.Service, path string) {
 	server = strings.Replace(server, "{{ENDPOINTS}}", endpointList, -1)
 	server = strings.Replace(server, "{{PACKAGE}}", collection.GetActivePackage().Name, -1)
 
+	if val, ok := collector.Constants["mainServicePackagePath"]; ok {
+		if str, ok := val.(string); ok {
+			server = strings.Replace(server, "{{MAIN_SERVICE_PACKAGE_PATH}}", str, -1)
+		}
+	}
+
 	server, err := s.gofmt(server)
 
 	if err != nil {

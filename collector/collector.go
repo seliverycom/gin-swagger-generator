@@ -31,6 +31,7 @@ type ReqRespField struct {
 	Type    string
 }
 
+var Constants = make(map[string]interface{})
 var structs = make(map[string]ReqResp)
 var endpoints = make(map[string]EndpointData)
 
@@ -58,6 +59,15 @@ func (s *Service) Collect(filePath string) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	ast.Inspect(node, func(n ast.Node) bool {
+		ts, ok := n.(*ast.ValueSpec)
+		if !ok {
+			return true
+		}
+		s.collectConst(ts)
+		return true
+	})
 
 	// Inspect the AST and print the names of all functions
 	ast.Inspect(node, func(n ast.Node) bool {
@@ -123,6 +133,20 @@ func (s *Service) collectEndpoints(fn *ast.FuncDecl) {
 	}
 
 	endpoints[meta.FunctionName] = meta
+}
+
+func (s *Service) collectConst(spec *ast.ValueSpec) {
+	if len(spec.Values) > 0 {
+		for i, ident := range spec.Names {
+			name := ident.Name
+			if len(spec.Values) > 0 {
+				if basicLit, ok := spec.Values[i].(*ast.BasicLit); ok {
+					value := basicLit.Value
+					Constants[name] = value
+				}
+			}
+		}
+	}
 }
 
 func (s *Service) collectStruct(spec *ast.TypeSpec) {

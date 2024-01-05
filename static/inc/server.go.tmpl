@@ -3,17 +3,20 @@
 package {{PACKAGE}}
 
 import (
+    service {{MAIN_SERVICE_PACKAGE_PATH}}
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"encoding/json"
 )
 
 type Service struct {
+    mainService *service.Service
 	gin *gin.Engine
 }
 
-func New(gin *gin.Engine) *Service {
+func New(gin *gin.Engine, service *service.Service) *Service {
 	return &Service{
+	    mainService: service,
 		gin: gin,
 	}
 }
@@ -28,5 +31,5 @@ func showError(c *gin.Context, err error) {
 }
 
 func (s *Service) Init() {
- {{ENDPOINTS}}
+    {{ENDPOINTS}}
 }

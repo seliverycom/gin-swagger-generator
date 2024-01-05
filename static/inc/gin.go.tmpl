@@ -1,7 +1,7 @@
 s.gin.{{METHOD}}("{{ENDPOINT}}", func(c *gin.Context) {
 		{{REQUEST}}
 
-		resp, err := {{FUNCTION}}(c.Request.Context(), request)
+		resp, err := s.{{FUNCTION}}(c.Request.Context(), request)
 		if err != nil {
 			showError(c, err)
 			return
