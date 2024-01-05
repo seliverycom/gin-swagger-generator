@@ -91,6 +91,10 @@ func (s *Service) Collect(filePath string) {
 			return true
 		}
 
+		if fn.Name.String() == "middleware" {
+			return true
+		}
+
 		s.collectEndpoints(fn)
 		return true
 	})

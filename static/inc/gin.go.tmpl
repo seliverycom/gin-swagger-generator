@@ -1,4 +1,4 @@
-s.gin.{{METHOD}}("{{ENDPOINT}}", func(c *gin.Context) {
+s.gin.{{METHOD}}("{{ENDPOINT}}", s.middleware(), func(c *gin.Context) {
 		{{REQUEST}}
 
 		resp, err := s.{{FUNCTION}}(c.Request.Context(), request)
