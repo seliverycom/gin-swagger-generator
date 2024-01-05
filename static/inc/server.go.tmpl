@@ -1,0 +1,31 @@
+// Package {{PACKAGE}}
+// @sparkle-generated
+package {{PACKAGE}}
+
+import (
+	"github.com/gin-gonic/gin"
+	"net/http"
+)
+
+type Service struct {
+	gin *gin.Engine
+}
+
+func New(gin *gin.Engine) *Service {
+	return &Service{
+		gin: gin,
+	}
+}
+
+type Error struct {
+	Message string
+	Success int
+}
+
+func showError(c *gin.Context, err error) {
+	c.JSON(http.StatusInternalServerError, Error{Message: err.Error(), Success: 0})
+}
+
+func (s *Service) Init() {
+ {{ENDPOINTS}}
+}

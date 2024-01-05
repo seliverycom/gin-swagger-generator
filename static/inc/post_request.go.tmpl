@@ -1,0 +1,6 @@
+var request {{PACKAGE}}.{{REQUEST_NAME}}
+err := c.BindJSON(&request)
+
+if (err != nil) {
+    showError(c, err)
+}

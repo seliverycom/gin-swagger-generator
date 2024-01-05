@@ -1,0 +1,11 @@
+s.gin.{{METHOD}}("{{ENDPOINT}}", func(c *gin.Context) {
+		{{REQUEST}}
+
+		resp, err := {{PACKAGE}}.{{FUNCTION}}(c.Request.Context(), request)
+		if err != nil {
+			showError(c, err)
+			return
+		}
+
+		c.JSON(http.StatusOK, resp)
+})
