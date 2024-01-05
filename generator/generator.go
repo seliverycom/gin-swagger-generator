@@ -45,7 +45,7 @@ func (s *Service) Init() {
 
 	s.generateSwagger(collection)
 
-	err = s.copyDir(s.folder, "static/swagger-ui", "./swagger-ui1")
+	err = s.copyDir(s.folder, "static/swagger-ui")
 
 	if err != nil {
 		panic(err)
@@ -128,18 +128,11 @@ func (s *Service) checkAndCreateFolder(folder string) {
 // Generating request params mapping to Request struct
 func (s *Service) generateRequest(endpoint collector.EndpointData) (request string) {
 	if endpoint.Method == "GET" {
-		var fields string
-		for _, f := range endpoint.Request.Fields {
-			fields += fmt.Sprintf("%s: c.Params.ByName(\"%s\"),\n", f.Name, f.VarName)
-		}
-
 		request = s.getTemplate("get-request")
-		request = strings.Replace(request, "{{REQUEST_MAPPING}}", fields, -1)
-		request = strings.Replace(request, "{{REQUEST_NAME}}", endpoint.Request.Name, -1)
-
 	} else {
 		request = s.getTemplate("post-request")
 	}
+	request = strings.Replace(request, "{{REQUEST_NAME}}", endpoint.Request.Name, -1)
 
 	return request
 }
@@ -326,7 +319,7 @@ func (s *Service) simpleTypeToScheme(fieldType string) *Schema {
 	}
 }
 
-func (s *Service) copyDir(sourceFS fs.FS, source string, target string) error {
+func (s *Service) copyDir(sourceFS fs.FS, source string) error {
 	return fs.WalkDir(sourceFS, source, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err

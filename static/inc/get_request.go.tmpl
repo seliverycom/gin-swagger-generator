@@ -1,3 +1,18 @@
-request := {{REQUEST_NAME}}{
-{{REQUEST_MAPPING}}
+singleValueParams := make(map[string]string)
+for key, values := range c.Request.URL.Query() {
+    if len(values) > 0 {
+        singleValueParams[key] = values[0]
+    }
+}
+marshaled, err := json.Marshal(singleValueParams)
+
+if err != nil {
+    panic(err)
+}
+
+var request {{REQUEST_NAME}}
+err = json.Unmarshal(marshaled, &request)
+
+if err != nil {
+    panic(err)
 }
