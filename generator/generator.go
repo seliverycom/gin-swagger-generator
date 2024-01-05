@@ -99,17 +99,20 @@ func (s *Service) generateServer(collection *collector.Service, path string) {
 	server = strings.Replace(server, "{{ENDPOINTS}}", endpointList, -1)
 	server = strings.Replace(server, "{{PACKAGE}}", collection.GetActivePackage().Name, -1)
 
-	server, _ = s.gofmt(server)
+	server, err := s.gofmt(server)
 
-	handlerDir := filepath.Dir(path)
-	serverDir := handlerDir + s.conf.ServerPath
-	s.checkAndCreateFolder(serverDir)
-	err := os.WriteFile(serverDir+"/"+s.conf.GeneratedFileName, []byte(server), 0644)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println("File created: " + serverDir + "/" + s.conf.GeneratedFileName)
+	handlerDir := filepath.Dir(path)
+	s.checkAndCreateFolder(handlerDir)
+	err = os.WriteFile(handlerDir+"/"+s.conf.GeneratedFileName, []byte(server), 0644)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("File created: " + handlerDir + "/" + s.conf.GeneratedFileName)
 }
 
 func (s *Service) checkAndCreateFolder(folder string) {

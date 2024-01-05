@@ -16,7 +16,6 @@ var staticFolder embed.FS
 func main() {
 	conf := config.Config{
 		ApiPath:           "internal/api",
-		ServerPath:        "/server",
 		GeneratedFileName: "server.go",
 		SwaggerPath:       "swagger",
 	}
