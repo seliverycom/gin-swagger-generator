@@ -27,7 +27,13 @@ type Error struct {
 }
 
 func showError(c *gin.Context, err error) {
-	c.JSON(http.StatusInternalServerError, Error{Message: err.Error(), Success: 0})
+	statusCode := http.StatusInternalServerError
+
+    if customError, ok := err.(*service.Error); ok {
+        statusCode = customError.StatusCode
+    }
+
+    c.JSON(statusCode, Error{Message: err.Error(), Success: 0})
 }
 
 func (s *Service) Init() {
