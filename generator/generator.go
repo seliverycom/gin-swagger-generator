@@ -93,7 +93,7 @@ func (s *Service) generateServer(collection *collector.Service, path string) {
 		ginTemplate = strings.Replace(ginTemplate, "{{FUNCTION}}", endpoint.FunctionName, -1)
 		ginTemplate = strings.Replace(ginTemplate, "{{REQUEST}}", s.generateRequest(endpoint), -1)
 
-		endpointList += ginTemplate
+		endpointList += ginTemplate + "\n"
 	}
 
 	server = strings.Replace(server, "{{ENDPOINTS}}", endpointList, -1)
