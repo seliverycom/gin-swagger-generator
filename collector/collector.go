@@ -123,14 +123,19 @@ func (s *Service) collectEndpoints(fn *ast.FuncDecl) {
 
 	// Parse Request
 	reqType := types.ExprString(fn.Type.Params.List[1].Type)
+	if reqType[0] == '*' {
+		reqType = reqType[1:]
+	}
 	request, ok := structs[reqType]
-
 	if ok {
 		meta.Request = request
 	}
 
 	// Parse response
 	respType := types.ExprString(fn.Type.Results.List[0].Type)
+	if respType[0] == '*' {
+		respType = respType[1:]
+	}
 	response, ok := structs[respType]
 	if ok {
 		meta.Response = response
