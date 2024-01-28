@@ -224,8 +224,10 @@ func (s *Service) gofmt(source string) (string, error) {
 
 func (s *Service) generateSwagger(collection *collector.Service) {
 	swagger := SwaggerSpec{
-		Swagger: "2.0",
-		Schemes: []string{"https"},
+		Swagger:  "2.0",
+		Schemes:  []string{"https"},
+		Consumes: []string{"application/json"},
+		Produces: []string{"application/json"},
 	}
 	swagger.Paths = make(map[string]map[string]PathItem)
 
@@ -261,7 +263,7 @@ func (s *Service) generateSwagger(collection *collector.Service) {
 
 		swagger.Paths[endpoint.Endpoint][strings.ToLower(endpoint.Method)] = PathItem{
 			Description: "",
-			OperationId: "",
+			OperationId: endpoint.Endpoint,
 			Parameters:  params,
 			Responses:   responses,
 		}
