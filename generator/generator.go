@@ -322,6 +322,8 @@ func (s *Service) simpleTypeToScheme(fieldType string) *Schema {
 		return &Schema{Type: "integer", Format: fieldType}
 	case "float", "float32", "float64":
 		return &Schema{Type: "number", Format: fieldType}
+	case "bool":
+		return &Schema{Type: "boolean"}
 	default:
 		return &Schema{Type: fieldType}
 	}

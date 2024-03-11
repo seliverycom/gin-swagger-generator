@@ -4,6 +4,10 @@ for key, values := range c.Request.URL.Query() {
         singleValueParams[key] = values[0]
     }
 }
+for _, param := range c.Params {
+    singleValueParams[param.Key] = param.Value
+}
+
 marshaled, err := json.Marshal(singleValueParams)
 
 if err != nil {
