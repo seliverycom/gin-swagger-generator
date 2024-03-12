@@ -196,7 +196,8 @@ func (s *Service) checkFileSkips(path string) bool {
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		if strings.HasPrefix(scanner.Text(), "// @sparkle-generated") {
+		if strings.HasPrefix(scanner.Text(), "// @sparkle-generated") ||
+			strings.HasPrefix(scanner.Text(), "// @skip-file") {
 			return true
 		}
 	}
