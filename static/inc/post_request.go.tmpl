@@ -4,3 +4,5 @@ err := c.BindJSON(&request)
 if (err != nil) {
     showError(c, err)
 }
+
+setFieldsFromURL(&request, c)

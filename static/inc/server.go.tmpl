@@ -36,6 +36,23 @@ func showError(c *gin.Context, err error) {
     c.JSON(statusCode, Error{Message: err.Error(), Success: 0})
 }
 
+func setFieldsFromURL(request interface{}, c *gin.Context) {
+	reqValue := reflect.ValueOf(request).Elem()
+	reqType := reflect.TypeOf(request).Elem()
+
+	for i := 0; i < reqType.NumField(); i++ {
+		field := reqType.Field(i)
+		jsonTag := field.Tag.Get("json")
+		jsonTags := strings.Split(jsonTag, ",")
+		fieldName := jsonTags[0]
+		fieldValue := reqValue.FieldByName(field.Name)
+
+		if paramValue := c.Param(fieldName); paramValue != "" {
+			fieldValue.SetString(paramValue)
+		}
+	}
+}
+
 func (s *Service) Init() {
     {{ENDPOINTS}}
 }
