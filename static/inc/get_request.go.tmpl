@@ -1,7 +1,11 @@
 singleValueParams := make(map[string]any)
 for key, values := range c.Request.URL.Query() {
     if len(values) > 0 {
-        singleValueParams[key] = values
+        if len(values) == 1 {
+            singleValueParams[key] = values[0]
+        } else {
+            singleValueParams[key] = values
+        }
     }
 }
 for _, param := range c.Params {
